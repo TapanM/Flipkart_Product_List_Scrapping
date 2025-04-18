@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Laptop Listings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    #loading {
+        display: none;
+        font-size: 18px;
+        color: #333;
+        margin-top: 15px;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #ccc;
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 10px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Product Listings from Flipkart</h2>
+
+    <form method="POST" class="d-flex mb-4" onsubmit="showLoading()">
+        <input class="form-control me-2" type="search" name="search" placeholder="Search products (e.g., mobile, tablet, laptop)" value="{{ search_query }}">
+        <button class="btn btn-dark" type="submit">Search</button>
+    </form>
+    <!-- Loading message -->
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Fetching data, please wait...</p>
+    </div>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Review</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.review }}</td>
+                <td><a href="{{ item.link }}" target="_blank">View Product</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if items|length == 0 %}
+        <p class="text-danger text-center">No products found for "{{ search_query }}"</p>
+    {% endif %}
+
+</div>
+</body>
+
+<script>
+    function showLoading() {
+      document.getElementById("loading").style.display = "block";
+    }
+  </script>
+</html>
